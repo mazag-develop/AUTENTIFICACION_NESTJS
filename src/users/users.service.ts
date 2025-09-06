@@ -42,6 +42,13 @@ export class UsersService {
     if (!user) throw new NotFoundException('Usuario no encontrado');
     return user;
   }
+  
+  async findById(id: string) {
+    return this.usersRepo.findOne({
+      where: { id },
+      relations: ['roles', 'roles.permissions'],
+    });
+  }
 
   async findByEmail(email: string) {
     const user = await this.usersRepo.findOne({
