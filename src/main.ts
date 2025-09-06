@@ -11,9 +11,9 @@ async function bootstrap() {
     cert: fs.readFileSync('./ssl/cert.pem'),
   };
 
-  const app = await NestFactory.create(AppModule, {
-    httpsOptions,
-  });
+  const app = await NestFactory.create(AppModule, 
+  // { httpsOptions,}
+  );
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
