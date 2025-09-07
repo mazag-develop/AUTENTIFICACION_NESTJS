@@ -78,4 +78,11 @@ export class UsersService {
     const user = await this.findOne(id);
     return this.usersRepo.remove(user);
   }
+
+  async findByGoogleId(googleId: string) {
+    return this.usersRepo.findOne({
+      where: { googleId },
+      relations: ['roles', 'roles.permissions'],
+    });
+  }
 }

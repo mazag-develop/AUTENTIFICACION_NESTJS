@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
 import cookieParser from 'cookie-parser';
 import { ValidationPipe } from '@nestjs/common';
+import { ApplicationsService } from './applications/applications.service';
 
 async function bootstrap() {
   const httpsOptions = {
@@ -12,14 +13,17 @@ async function bootstrap() {
   };
 
   const app = await NestFactory.create(AppModule, 
-  // { httpsOptions,}
+    { httpsOptions}
   );
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
 
+  const appService = app.get(ApplicationsService);
+  const apps = await appService.findAll();
+
   app.enableCors({
-    origin: ['https://localhost:4200', 'https://localhost:3000'],
+    origin: apps.map(a => a.redirectUrl),
     credentials: true,
   });
 
@@ -36,7 +40,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document, { swaggerOptions: { withCredentials: true } });
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(3000);
+  await app.listen(port);
   console.log(`🚀 Servidor corriendo en: https://localhost:${port}`);
   console.log(`📖 Swagger en: https://localhost:${port}/api`);
 }

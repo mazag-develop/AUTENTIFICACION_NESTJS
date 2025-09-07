@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { RolesModule } from '../roles/roles.module'; 
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from 'src/users/users.module';
 import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
@@ -13,6 +14,7 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
   imports: [
     TypeOrmModule.forFeature([User]),
     PassportModule,
+    RolesModule,
     JwtModule.register({ 
       secret: 'supersecret',
       signOptions: { expiresIn: '15m' },

@@ -26,4 +26,10 @@ export class CreateUserDto {
   @IsOptional()
   @IsUUID('all', { each: true })
   roles?: string[];
+
+  @ApiPropertyOptional({ description: 'Google ID del usuario' })
+  @IsOptional()
+  @IsString()
+  googleId?: string
+
 }

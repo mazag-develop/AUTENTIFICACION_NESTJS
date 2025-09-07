@@ -15,6 +15,7 @@ import { Role } from './roles/entities/role.entity';
 import { Permission } from './permissions/entities/permission.entity';
 import { Audit } from './audit/entities/audit.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ApplicationsModule } from './applications/applications.module';
 
 @Module({
   imports: [
@@ -32,12 +33,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entities: [User, Role, Permission, Audit],
         synchronize: true,
         autoLoadEntities: true,
-        // ssl: {
-        //   rejectUnauthorized: config.get<boolean>('DB_SSL'),
-        // },
+        ssl: {
+          rejectUnauthorized: config.get<boolean>('DB_SSL'),
+        },
       }),
     }),
-    UsersModule, RolesModule, PermissionsModule, AuthModule, AuditModule, SeedModule],
+    UsersModule, RolesModule, PermissionsModule, AuthModule, AuditModule, SeedModule, ApplicationsModule],
   controllers: [AppController],
   providers: [AppService, {
      provide: APP_INTERCEPTOR,

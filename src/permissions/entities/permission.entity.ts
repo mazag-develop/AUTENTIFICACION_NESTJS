@@ -1,5 +1,6 @@
+import { Application } from 'src/applications/entities/application.entity';
 import { Role } from 'src/roles/entities/role.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne } from 'typeorm';
 
 @Entity('permissions')
 export class Permission {
@@ -14,4 +15,7 @@ export class Permission {
 
   @ManyToMany(() => Role, (role) => role.permissions)
   roles: Role[];
+
+  @ManyToOne(() => Application, app => app.permissions, { eager: true })
+  app: Application;
 }
