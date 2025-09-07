@@ -1,10 +1,10 @@
 import { Controller, Post, Body, Res, UseGuards, Get, Req, UnauthorizedException } from '@nestjs/common';
 import type { Response, Request } from 'express';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { ApiBody, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
-import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { Roles } from './decorators';
+import { RolesGuard, JwtRefreshGuard, JwtAuthGuard } from './guards';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -21,14 +21,14 @@ export class AuthController {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      maxAge: 15 * 60 * 1000, // 15 min
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.json({ message: 'Login exitoso' });
   }
@@ -60,6 +60,7 @@ export class AuthController {
     return req['user'];
   }
 
+  @UseGuards(JwtAuthGuard)
   @ApiCookieAuth('access_token')
   @Post('logout')
   async logout(@Res() res: Response) {
