@@ -33,9 +33,9 @@ import { ApplicationsModule } from './applications/applications.module';
         entities: [User, Role, Permission, Audit],
         synchronize: true,
         autoLoadEntities: true,
-        ssl: {
-          rejectUnauthorized: config.get<boolean>('DB_SSL'),
-        },
+        // ssl: {
+        //   rejectUnauthorized: config.get<boolean>('DB_SSL'),
+        // },
       }),
     }),
     UsersModule, RolesModule, PermissionsModule, AuthModule, AuditModule, SeedModule, ApplicationsModule],
