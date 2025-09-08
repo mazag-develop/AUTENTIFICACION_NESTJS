@@ -31,7 +31,7 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard, PermissionsGuard)
   @ApiCookieAuth('access_token')
   @Roles('admin','prueba')
-  @Permissions('users:view')
+  @Permissions('users:post')
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
